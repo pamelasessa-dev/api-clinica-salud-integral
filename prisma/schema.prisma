@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Paciente {
+  CI Int @id
+  nombre String
+  apellido String
+  fecha_nacimiento DateTime
+  direccion String
+  telefono String
+
+  citas Cita[]
+
+  @@map("pacientes")
+}
+
+model Medico {
+  id_medico Int @id @default(autoincrement())
+  nombre String
+  apellido String
+  id_especialidad Int
+  especialidad Especialidad @relation(fields: [id_especialidad], references: [id_especialidad])
+
+  citas Cita[]
+
+  @@map("medicos")
+}
+
+model Especialidad {
+  id_especialidad Int @id @default(autoincrement())
+  nombre String
+  medicos Medico[]
+
+  @@map("especialidades")
+}
+
+model Cita {
+  id_cita Int @id @default(autoincrement())
+  fecha_hora DateTime
+  CI_paciente Int
+  id_medico Int
+  paciente Paciente @relation(fields: [CI_paciente], references: [CI])
+  medico Medico @relation(fields: [id_medico], references: [id_medico])
+  estado EstadoCita @default(PROGRAMADA)
+
+  @@map("citas")
+}
+
+enum EstadoCita {
+  PROGRAMADA
+  COMPLETADA
+  CANCELADA
+}
+
+enum Role {
+  RECEPCIONISTA
+  MEDICO
+  GERENCIA
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+  role Role
+  @@map("users")
+}
