@@ -3,6 +3,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger-output.json";
 import dotenv from "dotenv";
 import pacienteRoutes from "./routes/paciente.routes";
+import especialidadRoutes from "./routes/especialidad.routes";
 import cors from "cors";
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/pacientes", pacienteRoutes);
+app.use("/api/especialidades", especialidadRoutes);
 
 const PORT = process.env.PORT || 3000;
 
