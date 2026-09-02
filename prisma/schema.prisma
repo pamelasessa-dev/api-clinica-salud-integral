@@ -63,17 +63,19 @@ enum EstadoCita {
   CANCELADA
 }
 
-enum Role {
+enum Rol {
   RECEPCIONISTA
   MEDICO
   GERENCIA
 }
 
-model User {
+model Usuario {
   id       Int    @id @default(autoincrement())
+  nombre   String
+  apellido String
   email    String @unique
   password String
-  role     Role
+  rol      Rol
 
-  @@map("users")
+  @@map("usuarios")
 }
