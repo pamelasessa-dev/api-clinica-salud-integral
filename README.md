@@ -63,3 +63,83 @@ La API contará con documentación interactiva mediante Swagger UI.
 Una vez iniciado el servidor, estará disponible en:
 
 /api/docs
+
+## Instalación
+
+### Requisitos previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+* Node.js
+* pnpm
+* PostgreSQL
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/pamelasessa-dev/api-clinica-salud-integral.git
+cd api-clinica-salud-integral
+```
+
+### 2. Instalar las dependencias
+
+El proyecto utiliza **pnpm** como gestor de paquetes:
+
+```bash
+pnpm install
+```
+
+Si pnpm solicita aprobar scripts de construcción de Prisma, ejecutar:
+
+```bash
+pnpm approve-builds
+```
+
+Seleccionar:
+
+* `@prisma/engines`
+* `prisma`
+
+Luego ejecutar:
+
+```bash
+pnpm prisma generate
+```
+
+### 3. Configurar las variables de entorno
+
+Crear un archivo `.env` en la raíz del proyecto y configurar la variable de conexión a PostgreSQL:
+
+```env
+DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/nombre_base_de_datos"
+```
+
+> No subir el archivo `.env` al repositorio. Este archivo contiene información sensible y debe estar incluido en `.gitignore`.
+
+### 4. Ejecutar las migraciones
+
+Para crear/actualizar la estructura de la base de datos:
+
+```bash
+pnpm prisma migrate dev
+```
+
+### 5. Ejecutar el proyecto
+
+Para iniciar el servidor en modo desarrollo:
+
+```bash
+pnpm dev
+```
+
+La API estará disponible en:
+
+```text
+http://localhost:3000
+```
+
+La documentación de Swagger estará disponible en:
+
+```text
+http://localhost:3000/api-docs
+```
