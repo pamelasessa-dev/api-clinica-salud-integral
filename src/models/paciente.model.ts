@@ -1,9 +1,12 @@
 import prisma from "../config/prisma";
 
+
+// consulta de todos los pacientes
 export const getPacientes = async () => {
     return await prisma.paciente.findMany();
 }
 
+//consulta de paciente por CI
 export const getPacienteByCI = async (CI: number) => {
     return await prisma.paciente.findUnique({
         where: {
@@ -11,7 +14,18 @@ export const getPacienteByCI = async (CI: number) => {
         },
     });
 };
+//consulta de paciente por nombre
+export const getPacienteByNombre = async (nombre: string) => {
+    return await prisma.paciente.findMany({
+        where: {
+            nombre: {
+                contains: nombre,
+            },
+        },
+    });
+};
 
+// creación de un nuevo paciente
 export const createPaciente = async (data: { 
     CI: number;
     nombre: string; 
@@ -25,6 +39,7 @@ export const createPaciente = async (data: {
     });
 };
 
+// actualización de un paciente existente
 export const updatePaciente = async (CI: number, data: {
     nombre?: string;
     apellido?: string;
@@ -39,6 +54,8 @@ export const updatePaciente = async (CI: number, data: {
         data,
     });
 };
+
+// eliminación de un paciente existente
 export const deletePaciente = async (CI: number) => {
     return await prisma.paciente.delete({
         where: {

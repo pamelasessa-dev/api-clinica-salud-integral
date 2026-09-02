@@ -13,12 +13,12 @@ datasource db {
 }
 
 model Paciente {
-  CI Int @id
-  nombre String
-  apellido String
+  CI               Int      @id
+  nombre           String
+  apellido         String
   fecha_nacimiento DateTime
-  direccion String
-  telefono String
+  direccion        String
+  telefono         String
 
   citas Cita[]
 
@@ -26,11 +26,11 @@ model Paciente {
 }
 
 model Medico {
-  id_medico Int @id @default(autoincrement())
-  nombre String
-  apellido String
+  id_medico       Int          @id @default(autoincrement())
+  nombre          String
+  apellido        String
   id_especialidad Int
-  especialidad Especialidad @relation(fields: [id_especialidad], references: [id_especialidad])
+  especialidad    Especialidad @relation(fields: [id_especialidad], references: [id_especialidad])
 
   citas Cita[]
 
@@ -38,21 +38,21 @@ model Medico {
 }
 
 model Especialidad {
-  id_especialidad Int @id @default(autoincrement())
-  nombre String
-  medicos Medico[]
+  id_especialidad Int      @id @default(autoincrement())
+  nombre          String
+  medicos         Medico[]
 
   @@map("especialidades")
 }
 
 model Cita {
-  id_cita Int @id @default(autoincrement())
-  fecha_hora DateTime
+  id_cita     Int        @id @default(autoincrement())
+  fecha_hora  DateTime   
   CI_paciente Int
-  id_medico Int
-  paciente Paciente @relation(fields: [CI_paciente], references: [CI])
-  medico Medico @relation(fields: [id_medico], references: [id_medico])
-  estado EstadoCita @default(PROGRAMADA)
+  id_medico   Int
+  paciente    Paciente   @relation(fields: [CI_paciente], references: [CI])
+  medico      Medico     @relation(fields: [id_medico], references: [id_medico])
+  estado      EstadoCita @default(PROGRAMADA)
 
   @@map("citas")
 }
@@ -70,9 +70,10 @@ enum Role {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
   password String
-  role Role
+  role     Role
+
   @@map("users")
 }
