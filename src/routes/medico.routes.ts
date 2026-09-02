@@ -1,18 +1,23 @@
 import { Router } from "express";
-import { 
-    getEspecialidades,
-    getEspecialidadById,
-    createEspecialidad,
-    updateEspecialidad,
-    deleteEspecialidad
-} from "../controllers/especialidad.controller";
+
+import {
+  medicoController,
+  getMedicoByIdController,
+  createMedicoController,
+  updateMedicoController,
+  deleteMedicoController,
+} from "../controllers/medico.controller";
 
 const router = Router();
 
-router.get("/", getEspecialidades);
-router.get("/:id", getEspecialidadById);
-router.post("/", createEspecialidad);
-router.put("/:id", updateEspecialidad);
-router.delete("/:id", deleteEspecialidad);
+router.get("/", medicoController.getAll);
+
+router.get("/:id", getMedicoByIdController);
+
+router.post("/", createMedicoController);
+
+router.put("/:id", updateMedicoController);
+
+router.delete("/:id", deleteMedicoController);
 
 export default router;
