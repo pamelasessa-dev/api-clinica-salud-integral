@@ -25,9 +25,9 @@ export const getPacienteByCIController = async (req: Request, res: Response) => 
 };
 
 export const postPacienteController = async (req: Request, res: Response) => {
-    const { CI, nombre, apellido, fecha_nacimiento, direccion, telefono } = req.body;
+    const { CI, nombre, apellido,email, fecha_nacimiento, direccion, telefono } = req.body;
     try {
-        const paciente = await createPaciente({ CI, nombre, apellido, fecha_nacimiento, direccion, telefono });
+        const paciente = await createPaciente({ CI, nombre, apellido, email, fecha_nacimiento, direccion, telefono });
         res.status(201).json(paciente);
     } catch (error) {
         res.status(500).json({ message: "Error al crear paciente" });

@@ -1,14 +1,901 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "API Clinica Salud Integral",
-    "description": "API para la gestión de la Clinica Salud Integral",
-    "version": "1.0.0"
+    "title": "API Clínica Salud Integral",
+    "version": "1.0.0",
+    "description": "API REST para la gestión de pacientes, médicos, especialidades, citas y usuarios de la Clínica Salud Integral."
   },
   "host": "localhost:3000",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "Autenticación",
+      "description": "Registro e inicio de sesión de usuarios"
+    },
+    {
+      "name": "Pacientes",
+      "description": "Operaciones relacionadas con pacientes"
+    },
+    {
+      "name": "Especialidades",
+      "description": "Gestión de especialidades médicas"
+    },
+    {
+      "name": "Médicos",
+      "description": "Gestión de médicos"
+    },
+    {
+      "name": "Citas",
+      "description": "Gestión de citas médicas"
+    }
+  ],
   "schemes": [
     "http"
   ],
-  "paths": {}
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Ingrese el token JWT con el formato: Bearer {token}"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Servidor"
+        ],
+        "summary": "Verificar estado del servidor",
+        "description": "Comprueba que la API de la Clínica Salud Integral se encuentra funcionando correctamente.",
+        "responses": {
+          "200": {
+            "description": "El servidor está funcionando correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "El servidor está funcionando"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "summary": "Registrar un usuario",
+        "description": "Registra un nuevo usuario en el sistema de la Clínica Salud Integral. El rol puede ser RECEPCIONISTA, MEDICO o GERENCIA.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos del usuario. El campo rol debe ser RECEPCIONISTA, MEDICO o GERENCIA.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Ana"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Gimenez"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "ana.gimenez@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123"
+                },
+                "rol": {
+                  "type": "string",
+                  "example": "RECEPCIONISTA"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Usuario registrado correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "summary": "Iniciar sesión",
+        "description": "Autentica un usuario mediante su correo electrónico y contraseña y devuelve un token JWT.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Credenciales del usuario",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "juan.perez@email.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inicio de sesión exitoso. Devuelve un token JWT."
+          },
+          "401": {
+            "description": "Credenciales inválidas"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/pacientes/": {
+      "get": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Obtener todos los pacientes",
+        "description": "Obtiene la lista completa de pacientes registrados en la clínica.",
+        "responses": {
+          "200": {
+            "description": "Lista de pacientes obtenida correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Registrar un paciente",
+        "description": "Registra un nuevo paciente en el sistema.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos del paciente a registrar",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CI": {
+                  "type": "number",
+                  "example": 45678901
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Carlos"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Duarte"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "carlos.duarte@gmail.com"
+                },
+                "fecha_nacimiento": {
+                  "type": "string",
+                  "example": "1990-05-15"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Av. Italia 1234"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Paciente creado correctamente"
+          },
+          "400": {
+            "description": "Datos del paciente inválidos"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/pacientes/{CI}": {
+      "get": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Obtener un paciente por CI",
+        "description": "Obtiene la información de un paciente mediante su cédula de identidad.",
+        "parameters": [
+          {
+            "name": "CI",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Cédula de identidad del paciente",
+            "example": 45678901
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente encontrado correctamente"
+          },
+          "404": {
+            "description": "Paciente no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Actualizar un paciente",
+        "description": "Actualiza la información de un paciente existente mediante su cédula de identidad.",
+        "parameters": [
+          {
+            "name": "CI",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Cédula de identidad del paciente",
+            "example": 45678901
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos del paciente a actualizar",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Javier"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Ramirez"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "javi@gmail.com"
+                },
+                "fecha_nacimiento": {
+                  "type": "string",
+                  "example": "1990-05-15"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Av. Italia 1234"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente actualizado correctamente"
+          },
+          "400": {
+            "description": "Datos del paciente inválidos"
+          },
+          "404": {
+            "description": "Paciente no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Eliminar un paciente",
+        "description": "Elimina un paciente existente mediante su cédula de identidad.",
+        "parameters": [
+          {
+            "name": "CI",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Cédula de identidad del paciente",
+            "example": 45678901
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente eliminado correctamente"
+          },
+          "404": {
+            "description": "Paciente no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/especialidades/": {
+      "get": {
+        "tags": [
+          "Especialidades"
+        ],
+        "summary": "Obtener todas las especialidades",
+        "description": "Obtiene la lista completa de especialidades médicas registradas.",
+        "responses": {
+          "200": {
+            "description": "Lista de especialidades obtenida correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Especialidades"
+        ],
+        "summary": "Crear una especialidad",
+        "description": "Registra una nueva especialidad médica en el sistema.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos de la especialidad",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Cardiología"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Especialidad creada correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/especialidades/{id}": {
+      "get": {
+        "tags": [
+          "Especialidades"
+        ],
+        "summary": "Obtener una especialidad por ID",
+        "description": "Obtiene la información de una especialidad médica mediante su identificador.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador de la especialidad",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Especialidad encontrada correctamente"
+          },
+          "404": {
+            "description": "Especialidad no encontrada"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Especialidades"
+        ],
+        "summary": "Actualizar una especialidad",
+        "description": "Actualiza el nombre de una especialidad médica existente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador de la especialidad",
+            "example": 1
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos actualizados de la especialidad",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Cardiología"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Especialidad actualizada correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Especialidades"
+        ],
+        "summary": "Eliminar una especialidad",
+        "description": "Elimina una especialidad médica existente del sistema.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador de la especialidad",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Especialidad eliminada correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/medicos/": {
+      "get": {
+        "tags": [
+          "Médicos"
+        ],
+        "summary": "Obtener médicos",
+        "description": "Obtiene la lista de médicos registrados. Permite filtrar por nombre, apellido o especialidad.",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Filtrar médicos por nombre",
+            "example": "Lucas"
+          },
+          {
+            "name": "apellido",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Filtrar médicos por apellido",
+            "example": "Barboza"
+          },
+          {
+            "name": "id_especialidad",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "description": "Filtrar médicos por identificador de especialidad",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de médicos obtenida correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Médicos"
+        ],
+        "summary": "Registrar un médico",
+        "description": "Registra un nuevo médico y lo relaciona con una especialidad y un usuario existente.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos del médico",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Juan"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Pérez"
+                },
+                "id_especialidad": {
+                  "type": "number",
+                  "example": 1
+                },
+                "id_usuario": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Médico creado correctamente"
+          },
+          "400": {
+            "description": "Faltan datos obligatorios"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/medicos/{id}": {
+      "get": {
+        "tags": [
+          "Médicos"
+        ],
+        "summary": "Obtener un médico por ID",
+        "description": "Obtiene la información de un médico mediante su identificador.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador del médico",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico encontrado correctamente"
+          },
+          "404": {
+            "description": "Médico no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Médicos"
+        ],
+        "summary": "Actualizar un médico",
+        "description": "Actualiza la información de un médico existente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador del médico",
+            "example": 1
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos actualizados del médico",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "type": "string",
+                  "example": "Juan"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Pérez"
+                },
+                "id_especialidad": {
+                  "type": "number",
+                  "example": 2
+                },
+                "id_usuario": {
+                  "type": "number",
+                  "example": 2
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico actualizado correctamente"
+          },
+          "400": {
+            "description": "Faltan datos obligatorios"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Médicos"
+        ],
+        "summary": "Eliminar un médico",
+        "description": "Elimina un médico existente del sistema.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador del médico",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico eliminado correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/citas/": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Obtener citas",
+        "description": "Obtiene la lista de citas médicas. Permite filtrar las citas por su estado.",
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "PROGRAMADA",
+              "COMPLETADA",
+              "CANCELADA"
+            ],
+            "description": "Estado de la cita",
+            "example": "PROGRAMADA"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de citas obtenida correctamente"
+          },
+          "400": {
+            "description": "Estado de cita inválido"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Crear una cita",
+        "description": "Registra una nueva cita médica asociando un paciente con un médico.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos de la cita",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fecha_hora": {
+                  "type": "string",
+                  "example": "2026-09-15T10:30:00.000Z"
+                },
+                "CI_paciente": {
+                  "type": "number",
+                  "example": 45678901
+                },
+                "id_medico": {
+                  "type": "number",
+                  "example": 1
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "PROGRAMADA"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cita creada correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/citas/{id}": {
+      "get": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Obtener una cita por ID",
+        "description": "Obtiene la información de una cita médica mediante su identificador.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador de la cita",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cita encontrada correctamente"
+          },
+          "404": {
+            "description": "Cita no encontrada"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Actualizar una cita",
+        "description": "Actualiza los datos de una cita médica existente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador de la cita",
+            "example": 1
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Datos de la cita a actualizar",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fecha_hora": {
+                  "type": "string",
+                  "example": "2026-09-15T11:00:00.000Z"
+                },
+                "CI_paciente": {
+                  "type": "number",
+                  "example": 45678901
+                },
+                "id_medico": {
+                  "type": "number",
+                  "example": 2
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "COMPLETADA"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cita actualizada correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Eliminar una cita",
+        "description": "Elimina una cita médica existente.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador de la cita",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cita eliminada correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    }
+  }
 }
