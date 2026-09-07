@@ -50,7 +50,7 @@ router.get("/",
 router.patch(
   "/:id/status",
   verifyToken,
-  authorize("MEDICO"),
+  authorize("RECEPCIONISTA"),
   validateSchema(updateEstadoCitaSchema),
   updateCitaEstadoController,
   (req, res) => {
