@@ -12,11 +12,6 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  console.log("🌱 Iniciando seed...\n");
-
-  // =========================================================
-  // ESPECIALIDADES
-  // =========================================================
 
   const nombresEspecialidades = [
     "Cardiología",
@@ -47,25 +42,14 @@ async function main() {
     especialidades[nombre] = especialidad.id_especialidad;
   }
 
-  console.log("✅ Especialidades creadas/verificadas.");
-  console.log(`   Total: ${nombresEspecialidades.length}\n`);
-
-  // =========================================================
-  // CONTRASEÑAS DE PRUEBA
-  // =========================================================
-
   const passwordMedico = await bcrypt.hash("Medico123!", 10);
   const passwordRecepcion = await bcrypt.hash("Recepcion123!", 10);
   const passwordGerencia = await bcrypt.hash("Gerencia123!", 10);
 
-  // =========================================================
-  // MÉDICOS + USUARIOS MÉDICOS
-  // =========================================================
+ 
 
   const medicosData = [
-    // -------------------------
-    // Cardiología
-    // -------------------------
+    
     {
       nombre: "Lucas",
       apellido: "Barboza",
@@ -79,9 +63,7 @@ async function main() {
       especialidad: "Cardiología",
     },
 
-    // -------------------------
-    // Pediatría
-    // -------------------------
+
     {
       nombre: "María",
       apellido: "Santos",
@@ -95,9 +77,7 @@ async function main() {
       especialidad: "Pediatría",
     },
 
-    // -------------------------
-    // Dermatología
-    // -------------------------
+   
     {
       nombre: "Favian",
       apellido: "Ramírez",
@@ -111,9 +91,7 @@ async function main() {
       especialidad: "Dermatología",
     },
 
-    // -------------------------
-    // Psicología
-    // -------------------------
+
     {
       nombre: "Sofía",
       apellido: "Fernández",
@@ -127,9 +105,7 @@ async function main() {
       especialidad: "Psicología",
     },
 
-    // -------------------------
-    // Ginecología
-    // -------------------------
+
     {
       nombre: "Laura",
       apellido: "Rodríguez",
@@ -143,9 +119,7 @@ async function main() {
       especialidad: "Ginecología",
     },
 
-    // -------------------------
-    // Oftalmología
-    // -------------------------
+
     {
       nombre: "Diego",
       apellido: "Silva",
@@ -159,9 +133,7 @@ async function main() {
       especialidad: "Oftalmología",
     },
 
-    // -------------------------
-    // Odontología
-    // -------------------------
+   
     {
       nombre: "Javier",
       apellido: "Gómez",
@@ -175,9 +147,6 @@ async function main() {
       especialidad: "Odontología",
     },
 
-    // -------------------------
-    // Medicina General
-    // -------------------------
     {
       nombre: "Federico",
       apellido: "López",
@@ -191,9 +160,7 @@ async function main() {
       especialidad: "Medicina General",
     },
 
-    // -------------------------
-    // Psiquiatría
-    // -------------------------
+   
     {
       nombre: "Sebastián",
       apellido: "Acosta",
@@ -207,9 +174,7 @@ async function main() {
       especialidad: "Psiquiatría",
     },
 
-    // -------------------------
-    // Traumatología
-    // -------------------------
+ 
     {
       nombre: "Gonzalo",
       apellido: "Suárez",
@@ -268,11 +233,7 @@ async function main() {
     medicos[medicoData.email] = medico.id_medico;
   }
 
-  console.log("✅ 20 médicos y sus usuarios fueron creados/verificados.\n");
-
-  // =========================================================
-  // RECEPCIONISTAS
-  // =========================================================
+ 
 
   const recepcionistas = [
     {
@@ -308,12 +269,7 @@ async function main() {
     });
   }
 
-  console.log("✅ Recepcionistas creados/verificados.");
-  console.log(`   Total: ${recepcionistas.length}\n`);
-
-  // =========================================================
-  // GERENCIA
-  // =========================================================
+  
 
   await prisma.usuario.upsert({
     where: {
@@ -334,11 +290,7 @@ async function main() {
     },
   });
 
-  console.log("✅ Usuario de gerencia creado/verificado.\n");
 
-  // =========================================================
-  // PACIENTES
-  // =========================================================
 
   const pacientes = [
     {
@@ -450,16 +402,10 @@ async function main() {
     });
   }
 
-  console.log("✅ 10 pacientes creados/verificados.\n");
-
-  // =========================================================
-  // CITAS
-  // =========================================================
 
   const citas = [
-    // ---------------------------------------
-    // Citas pasadas / completadas
-    // ---------------------------------------
+
+    // Citas pasadas completadas
     {
       fecha_hora: new Date("2026-09-03T09:00:00-03:00"),
       CI_paciente: 51234567,
@@ -473,9 +419,8 @@ async function main() {
       estado: "COMPLETADA" as const,
     },
 
-    // ---------------------------------------
     // Cita cancelada
-    // ---------------------------------------
+
     {
       fecha_hora: new Date("2026-09-04T11:00:00-03:00"),
       CI_paciente: 53456789,
@@ -483,9 +428,8 @@ async function main() {
       estado: "CANCELADA" as const,
     },
 
-    // ---------------------------------------
     // Citas programadas
-    // ---------------------------------------
+
     {
       fecha_hora: new Date("2026-09-07T09:00:00-03:00"),
       CI_paciente: 54567890,
@@ -559,11 +503,7 @@ async function main() {
       estado: "PROGRAMADA" as const,
     },
     
-//-----corregir-------//
-    // Caso adicional:
-    // mismo paciente con otro médico y misma
-    // hora. Esto ES válido según tu regla.
-    // ---------------------------------------
+
     {
       fecha_hora: new Date("2026-09-15T10:00:00-03:00"),
       CI_paciente: 51234567,
@@ -606,14 +546,9 @@ async function main() {
       },
     });
   }
-
-  console.log(
-    `✅ ${citas.length} citas creadas/verificadas.\n`
   );
 
-  // =========================================================
-  // RESUMEN
-  // =========================================================
+  
 
   const cantidadEspecialidades = await prisma.especialidad.count();
   const cantidadUsuarios = await prisma.usuario.count();
@@ -621,21 +556,18 @@ async function main() {
   const cantidadPacientes = await prisma.paciente.count();
   const cantidadCitas = await prisma.cita.count();
 
-  console.log("========================================");
-  console.log("🌱 SEED COMPLETADO CORRECTAMENTE");
-  console.log("========================================");
+
   console.log(`Especialidades: ${cantidadEspecialidades}`);
   console.log(`Usuarios:       ${cantidadUsuarios}`);
   console.log(`Médicos:        ${cantidadMedicos}`);
   console.log(`Pacientes:      ${cantidadPacientes}`);
   console.log(`Citas:          ${cantidadCitas}`);
-  console.log("========================================\n");
 
-  // =========================================================
+  
   // USUARIOS DE PRUEBA
-  // =========================================================
+ 
 
-  console.log("🔐 USUARIOS DE PRUEBA");
+  console.log(" USUARIOS DE PRUEBA");
   console.log("----------------------------------------");
 
   console.log("Médicos:");
@@ -659,11 +591,8 @@ async function main() {
 
   console.log("----------------------------------------\n");
 
-  // =========================================================
-  // CASOS ÚTILES PARA PROBAR ENDPOINTS
-  // =========================================================
 
-  console.log("🧪 CASOS ÚTILES PARA PRUEBAS");
+  console.log("CASOS ÚTILES PARA PRUEBAS");
   console.log("----------------------------------------");
 
   console.log("Paciente:");
@@ -700,7 +629,7 @@ async function main() {
 
 main()
   .catch((error) => {
-    console.error("❌ Error al ejecutar el seed:", error);
+    console.error(" Error al ejecutar el seed:", error);
     process.exit(1);
   })
   .finally(async () => {
