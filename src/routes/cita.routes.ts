@@ -57,6 +57,47 @@ router.patch(
     /*
       #swagger.tags = ['Citas']
       #swagger.summary = 'Actualizar estado de una cita'
+      #swagger.description = 'Actualiza el estado de una cita médica existente.'
+
+      #swagger.parameters['id'] = {
+        in: 'path',
+        required: true,
+        type: 'integer',
+        description: 'Identificador de la cita'
+      }
+
+      #swagger.parameters['body'] = {
+        in: 'body',
+        required: true,
+        description: 'Nuevo estado de la cita',
+        schema: {
+          estado: 'CONFIRMADA'
+        }
+      }
+
+      #swagger.responses[200] = {
+        description: 'Estado de la cita actualizado correctamente'
+      }
+
+      #swagger.responses[400] = {
+        description: 'Datos inválidos'
+      }
+
+      #swagger.responses[401] = {
+        description: 'Token no proporcionado o inválido'
+      }
+
+      #swagger.responses[403] = {
+        description: 'El usuario no tiene permisos'
+      }
+
+      #swagger.responses[404] = {
+        description: 'Cita no encontrada'
+      }
+
+      #swagger.responses[500] = {
+        description: 'Error interno del servidor'
+      }
     */
   }
 );

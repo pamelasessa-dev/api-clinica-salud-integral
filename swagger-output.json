@@ -174,13 +174,6 @@
         ],
         "summary": "Obtener todos los pacientes",
         "description": "Obtiene la lista completa de pacientes registrados en la clínica.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Lista de pacientes obtenida correctamente"
@@ -203,11 +196,6 @@
         "summary": "Registrar un paciente",
         "description": "Registra un nuevo paciente en el sistema.",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -282,11 +270,6 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -326,11 +309,6 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -365,11 +343,6 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           },
           {
             "name": "body",
@@ -442,11 +415,6 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -475,13 +443,6 @@
         ],
         "summary": "Obtener todas las especialidades",
         "description": "Obtiene la lista completa de especialidades médicas registradas.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Lista de especialidades obtenida correctamente"
@@ -504,11 +465,6 @@
         "summary": "Crear una especialidad",
         "description": "Registra una nueva especialidad médica en el sistema.",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -556,11 +512,6 @@
             "type": "integer",
             "description": "Identificador de la especialidad",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -595,11 +546,6 @@
             "type": "integer",
             "description": "Identificador de la especialidad",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           },
           {
             "name": "body",
@@ -646,11 +592,6 @@
             "type": "integer",
             "description": "Identificador de la especialidad",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -677,11 +618,6 @@
         "summary": "Obtener médicos",
         "description": "Obtiene la lista de médicos registrados. Permite filtrar por nombre, apellido o especialidad.",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "nombre",
             "in": "query",
@@ -729,11 +665,6 @@
         "summary": "Registrar un médico",
         "description": "Registra un nuevo médico y lo relaciona con una especialidad y un usuario existente.",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -790,11 +721,6 @@
         "description": "Obtiene la agenda del médico correspondiente al usuario autenticado. Permite filtrar las citas mediante un rango de fechas.",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "from",
             "in": "query",
             "required": false,
@@ -850,11 +776,6 @@
             "type": "integer",
             "description": "Identificador del médico",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -889,11 +810,6 @@
             "type": "integer",
             "description": "Identificador del médico",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           },
           {
             "name": "body",
@@ -955,11 +871,6 @@
             "type": "integer",
             "description": "Identificador del médico",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -986,11 +897,6 @@
         "summary": "Obtener citas",
         "description": "Obtiene la lista de citas médicas. Permite filtrar las citas por su estado.",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "desde",
             "in": "query",
@@ -1041,11 +947,6 @@
         "description": "Registra una nueva cita médica asociando un paciente con un médico.",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -1086,6 +987,9 @@
           "403": {
             "description": "Forbidden"
           },
+          "409": {
+            "description": "Conflict"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -1098,38 +1002,49 @@
           "Citas"
         ],
         "summary": "Actualizar estado de una cita",
-        "description": "",
+        "description": "Actualiza el estado de una cita médica existente.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Identificador de la cita"
           },
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Nuevo estado de la cita",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "estado": {
+                  "type": "string",
+                  "example": "CONFIRMADA"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Estado de la cita actualizado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos inválidos"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Token no proporcionado o inválido"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "El usuario no tiene permisos"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Cita no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -1149,11 +1064,6 @@
             "type": "integer",
             "description": "Identificador de la cita",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -1188,11 +1098,6 @@
             "type": "integer",
             "description": "Identificador de la cita",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           },
           {
             "name": "body",
@@ -1254,11 +1159,6 @@
             "type": "integer",
             "description": "Identificador de la cita",
             "example": 1
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
@@ -1284,13 +1184,6 @@
         ],
         "summary": "Obtener citas por especialidad",
         "description": "Obtiene el total de citas agrupadas por especialidad médica.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Reporte obtenido correctamente"
@@ -1315,11 +1208,6 @@
         "summary": "Obtener corte operativo diario",
         "description": "Obtiene la cantidad de citas completadas y canceladas en una fecha específica.",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "date",
             "in": "query",
@@ -1349,5 +1237,10 @@
         }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }
