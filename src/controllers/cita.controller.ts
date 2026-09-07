@@ -29,12 +29,7 @@ export const getCitas = {
       }
 
       // Validar que estado pertenezca al enum EstadoCita
-      if (
-        estado &&
-        !Object.values(EstadoCita).includes(
-          estado as EstadoCita
-        )
-      ) {
+      if (estado && !Object.values(EstadoCita).includes(estado as EstadoCita)) {
         res.status(400).json({
           error: "Estado de cita inválido",
           estadosPermitidos: Object.values(EstadoCita),
@@ -65,7 +60,7 @@ export const getCitas = {
       const citas = await getAllCitas(
         estado as EstadoCita | undefined,
         desde ? new Date(desde) : undefined,
-        hasta ? new Date(hasta) : undefined
+        hasta ? new Date(hasta) : undefined,
       );
 
       res.status(200).json({
@@ -83,7 +78,7 @@ export const getCitas = {
 
 export const getCitaByIdController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { id } = req.params;
@@ -110,7 +105,7 @@ export const getCitaByIdController = async (
 
 export const createCitaController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const result = citaSchema.safeParse(req.body);
@@ -151,10 +146,9 @@ export const createCitaController = async (
   }
 };
 
-
 export const updateCitaController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const result = updateCitaSchema.safeParse(req.body);
@@ -198,10 +192,9 @@ export const updateCitaController = async (
 
 export const updateCitaEstadoController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
-    // Validamos el body con Zod
     const result = updateEstadoCitaSchema.safeParse(req.body);
 
     if (!result.success) {
@@ -215,7 +208,6 @@ export const updateCitaEstadoController = async (
     const { id } = req.params;
     const { estado } = result.data;
 
-    // El verifyToken ya colocó el usuario en req.user
     if (!req.user) {
       res.status(401).json({
         message: "Usuario no autenticado",
@@ -223,20 +215,13 @@ export const updateCitaEstadoController = async (
       return;
     }
 
-    const cita = await updateCitaEstado(
-      Number(id),
-      estado,
-      req.user.id
-    );
+    const cita = await updateCitaEstado(Number(id), estado, req.user.id);
 
     res.status(200).json(cita);
   } catch (error) {
     console.error(error);
 
-    if (
-      error instanceof Error &&
-      error.message === "Cita no encontrada"
-    ) {
+    if (error instanceof Error && error.message === "Cita no encontrada") {
       res.status(404).json({
         message: error.message,
       });
@@ -245,10 +230,8 @@ export const updateCitaEstadoController = async (
 
     if (
       error instanceof Error &&
-      (
-        error.message === "El usuario no está asociado a un médico" ||
-        error.message === "No tienes permiso para modificar esta cita"
-      )
+      (error.message === "El usuario no está asociado a un médico" ||
+        error.message === "No tienes permiso para modificar esta cita")
     ) {
       res.status(403).json({
         message: error.message,
@@ -264,7 +247,7 @@ export const updateCitaEstadoController = async (
 
 export const deleteCitaController = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<void> => {
   try {
     const { id } = req.params;

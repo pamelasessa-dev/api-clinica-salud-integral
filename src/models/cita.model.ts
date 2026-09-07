@@ -5,7 +5,7 @@ import prisma from "../config/prisma";
 export const getAllCitas = async (
   estado?: EstadoCita,
   desde?: Date,
-  hasta?: Date
+  hasta?: Date,
 ) => {
   return await prisma.cita.findMany({
     where: {
@@ -54,41 +54,40 @@ export const getAllCitas = async (
   });
 };
 
-export const getCitaById = async (id:number) => {
-    return await prisma.cita.findUnique({
-        where:{
-            id_cita: id,
-        },
+export const getCitaById = async (id: number) => {
+  return await prisma.cita.findUnique({
+    where: {
+      id_cita: id,
+    },
+    select: {
+      id_cita: true,
+      fecha_hora: true,
+      estado: true,
+
+      paciente: {
         select: {
-            id_cita: true,
-            fecha_hora: true,   
-            estado: true,
-
-            paciente: {
-                select: {
-                    CI: true,
-                    nombre: true,
-                    apellido: true,
-                    telefono: true,
-                },
-            },
-            medico:{
-                select: {
-                    id_medico: true,
-                    nombre: true,
-                    apellido: true,
-                    especialidad: {
-                        select: {
-                            id_especialidad: true,
-                            nombre: true,
-                        },
-                    },
-                },
-            }
+          CI: true,
+          nombre: true,
+          apellido: true,
+          telefono: true,
         },
-    });
+      },
+      medico: {
+        select: {
+          id_medico: true,
+          nombre: true,
+          apellido: true,
+          especialidad: {
+            select: {
+              id_especialidad: true,
+              nombre: true,
+            },
+          },
+        },
+      },
+    },
+  });
 };
-
 
 export const createCita = async (data: {
   fecha_hora: Date;
@@ -124,73 +123,72 @@ export const createCita = async (data: {
     throw new Error("El paciente ya tiene una cita en ese horario");
   }
 
-  // 4. Crear la cita
+  // Crear cita
   return await prisma.cita.create({
     data,
   });
 };
 
-export const updateCita = async (id: number, data: {
+export const updateCita = async (
+  id: number,
+  data: {
     fecha_hora?: Date;
     CI_paciente?: number;
     id_medico?: number;
     estado?: EstadoCita;
-}) => {
-    return await prisma.cita.update({
-        where: {
-            id_cita: id,
-        },
-        data,
-    });
+  },
+) => {
+  return await prisma.cita.update({
+    where: {
+      id_cita: id,
+    },
+    data,
+  });
 };
 
 export const updateCitaEstado = async (
-    id: number,
-    estado: EstadoCita,
-    idUsuario: number
+  id: number,
+  estado: EstadoCita,
+  idUsuario: number,
 ) => {
-    // Buscamos el médico asociado al usuario autenticado
-    const medico = await prisma.medico.findUnique({
-        where: {
-            id_usuario: idUsuario,
-        },
-    });
+  const medico = await prisma.medico.findUnique({
+    where: {
+      id_usuario: idUsuario,
+    },
+  });
 
-    if (!medico) {
-        throw new Error("El usuario no está asociado a un médico");
-    }
+  if (!medico) {
+    throw new Error("El usuario no está asociado a un médico");
+  }
 
-    // Buscamos la cita
-    const cita = await prisma.cita.findUnique({
-        where: {
-            id_cita: id,
-        },
-    });
+  const cita = await prisma.cita.findUnique({
+    where: {
+      id_cita: id,
+    },
+  });
 
-    if (!cita) {
-        throw new Error("Cita no encontrada");
-    }
+  if (!cita) {
+    throw new Error("Cita no encontrada");
+  }
 
-    // Verificamos que la cita pertenezca al médico
-    if (cita.id_medico !== medico.id_medico) {
-        throw new Error("No tienes permiso para modificar esta cita");
-    }
+  if (cita.id_medico !== medico.id_medico) {
+    throw new Error("No tienes permiso para modificar esta cita");
+  }
 
-    // Si pertenece al médico, actualizamos el estado
-    return await prisma.cita.update({
-        where: {
-            id_cita: id,
-        },
-        data: {
-            estado,
-        },
-    });
+  return await prisma.cita.update({
+    where: {
+      id_cita: id,
+    },
+    data: {
+      estado,
+    },
+  });
 };
 
 export const deleteCita = async (id: number) => {
-    return await prisma.cita.delete({
-        where: {
-            id_cita: id,
-        },
-    });
+  return await prisma.cita.delete({
+    where: {
+      id_cita: id,
+    },
+  });
 };

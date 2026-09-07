@@ -39,7 +39,7 @@ export const getDailyCutoffController = async (
       return;
     }
 
-    // Validación básica del formato
+    
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
       res.status(400).json({
         message: "La fecha debe tener formato YYYY-MM-DD",
@@ -49,8 +49,7 @@ export const getDailyCutoffController = async (
 
     const reporte = await getDailyCutoff(date);
 
-    // Dejamos siempre ambos estados en la respuesta,
-    // incluso cuando uno de ellos tenga 0 citas.
+ 
     const completadas =
       reporte.find((item) => item.estado === "COMPLETADA")?._count.estado ?? 0;
 
