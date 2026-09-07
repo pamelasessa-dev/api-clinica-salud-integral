@@ -11,7 +11,6 @@ const doc = {
   host: "localhost:3000",
   basePath: "/",
   schemes: ["http"],
-
   consumes: ["application/json"],
   produces: ["application/json"],
 
@@ -47,10 +46,17 @@ const doc = {
         "Ingrese el token JWT con el formato: Bearer {token}",
     },
   },
+
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
 };
 
 const outputFile = "../swagger-output.json";
+const endpointsFiles = ["./src/index.ts",];
 
-const endpointsFiles = ["./src/index.ts"];
-
-swaggerAutogen()(outputFile, endpointsFiles, doc);
+swaggerAutogen({
+  autoHeaders: false,
+})(outputFile, endpointsFiles, doc);
