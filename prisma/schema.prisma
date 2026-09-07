@@ -51,6 +51,8 @@ model Cita {
   medico      Medico     @relation(fields: [id_medico], references: [id_medico])
 
   @@unique([id_medico, fecha_hora])
+  @@unique([CI_paciente, fecha_hora])
+  
   @@map("citas")
 }
 

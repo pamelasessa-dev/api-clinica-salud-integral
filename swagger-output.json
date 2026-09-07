@@ -174,9 +174,22 @@
         ],
         "summary": "Obtener todos los pacientes",
         "description": "Obtiene la lista completa de pacientes registrados en la clínica.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de pacientes obtenida correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Error interno del servidor"
@@ -190,6 +203,11 @@
         "summary": "Registrar un paciente",
         "description": "Registra un nuevo paciente en el sistema.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -237,6 +255,56 @@
           "400": {
             "description": "Datos del paciente inválidos"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/pacientes/{CI}/expediente": {
+      "get": {
+        "tags": [
+          "Pacientes"
+        ],
+        "summary": "Obtener expediente completo de un paciente",
+        "description": "Obtiene los datos completos del paciente junto con su historial de citas, incluyendo el médico y la especialidad de cada cita.",
+        "parameters": [
+          {
+            "name": "CI",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Cédula de identidad del paciente",
+            "example": 45678901
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Expediente obtenido correctamente"
+          },
+          "400": {
+            "description": "CI inválido"
+          },
+          "401": {
+            "description": "Token no proporcionado o inválido"
+          },
+          "403": {
+            "description": "El usuario no tiene permisos para consultar el expediente"
+          },
+          "404": {
+            "description": "Paciente no encontrado"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -258,11 +326,22 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Paciente encontrado correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Paciente no encontrado"
@@ -286,6 +365,11 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           },
           {
             "name": "body",
@@ -330,6 +414,12 @@
           "400": {
             "description": "Datos del paciente inválidos"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "404": {
             "description": "Paciente no encontrado"
           },
@@ -352,11 +442,22 @@
             "type": "integer",
             "description": "Cédula de identidad del paciente",
             "example": 45678901
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Paciente eliminado correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Paciente no encontrado"
@@ -374,9 +475,22 @@
         ],
         "summary": "Obtener todas las especialidades",
         "description": "Obtiene la lista completa de especialidades médicas registradas.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de especialidades obtenida correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Error interno del servidor"
@@ -390,6 +504,11 @@
         "summary": "Crear una especialidad",
         "description": "Registra una nueva especialidad médica en el sistema.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -409,6 +528,12 @@
         "responses": {
           "201": {
             "description": "Especialidad creada correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Error interno del servidor"
@@ -431,11 +556,22 @@
             "type": "integer",
             "description": "Identificador de la especialidad",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Especialidad encontrada correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Especialidad no encontrada"
@@ -461,6 +597,11 @@
             "example": 1
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -479,6 +620,12 @@
         "responses": {
           "200": {
             "description": "Especialidad actualizada correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Error interno del servidor"
@@ -499,11 +646,22 @@
             "type": "integer",
             "description": "Identificador de la especialidad",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Especialidad eliminada correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Error interno del servidor"
@@ -519,6 +677,11 @@
         "summary": "Obtener médicos",
         "description": "Obtiene la lista de médicos registrados. Permite filtrar por nombre, apellido o especialidad.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "nombre",
             "in": "query",
@@ -548,6 +711,12 @@
           "200": {
             "description": "Lista de médicos obtenida correctamente"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -560,6 +729,11 @@
         "summary": "Registrar un médico",
         "description": "Registra un nuevo médico y lo relaciona con una especialidad y un usuario existente.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -595,6 +769,66 @@
           "400": {
             "description": "Faltan datos obligatorios"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/medicos/citas": {
+      "get": {
+        "tags": [
+          "Médicos"
+        ],
+        "summary": "Obtener agenda del médico autenticado",
+        "description": "Obtiene la agenda del médico correspondiente al usuario autenticado. Permite filtrar las citas mediante un rango de fechas.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "Fecha inicial del rango de búsqueda",
+            "example": "2026-09-01"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "Fecha final del rango de búsqueda",
+            "example": "2026-09-30"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agenda obtenida correctamente"
+          },
+          "400": {
+            "description": "Parámetros de fecha inválidos"
+          },
+          "401": {
+            "description": "Token no proporcionado o inválido"
+          },
+          "403": {
+            "description": "El usuario no tiene permisos para consultar la agenda"
+          },
+          "404": {
+            "description": "No se encontró un médico asociado al usuario autenticado"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -616,11 +850,22 @@
             "type": "integer",
             "description": "Identificador del médico",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Médico encontrado correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Médico no encontrado"
@@ -644,6 +889,11 @@
             "type": "integer",
             "description": "Identificador del médico",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           },
           {
             "name": "body",
@@ -680,6 +930,12 @@
           "400": {
             "description": "Faltan datos obligatorios"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -699,11 +955,22 @@
             "type": "integer",
             "description": "Identificador del médico",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Médico eliminado correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "500": {
             "description": "Error interno del servidor"
@@ -719,6 +986,21 @@
         "summary": "Obtener citas",
         "description": "Obtiene la lista de citas médicas. Permite filtrar las citas por su estado.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "desde",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "hasta",
+            "in": "query",
+            "type": "string"
+          },
           {
             "name": "estado",
             "in": "query",
@@ -740,6 +1022,12 @@
           "400": {
             "description": "Estado de cita inválido"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -752,6 +1040,11 @@
         "summary": "Crear una cita",
         "description": "Registra una nueva cita médica asociando un paciente con un médico.",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -784,8 +1077,59 @@
           "201": {
             "description": "Cita creada correctamente"
           },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/citas/{id}/status": {
+      "patch": {
+        "tags": [
+          "Citas"
+        ],
+        "summary": "Actualizar estado de una cita",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -805,11 +1149,22 @@
             "type": "integer",
             "description": "Identificador de la cita",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Cita encontrada correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Cita no encontrada"
@@ -833,6 +1188,11 @@
             "type": "integer",
             "description": "Identificador de la cita",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           },
           {
             "name": "body",
@@ -866,6 +1226,15 @@
           "200": {
             "description": "Cita actualizada correctamente"
           },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
           "500": {
             "description": "Error interno del servidor"
           }
@@ -885,11 +1254,94 @@
             "type": "integer",
             "description": "Identificador de la cita",
             "example": 1
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Cita eliminada correctamente"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/reports/appointments-by-specialty": {
+      "get": {
+        "tags": [
+          "Reportes"
+        ],
+        "summary": "Obtener citas por especialidad",
+        "description": "Obtiene el total de citas agrupadas por especialidad médica.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reporte obtenido correctamente"
+          },
+          "401": {
+            "description": "Token no proporcionado o inválido"
+          },
+          "403": {
+            "description": "El usuario no tiene permisos de gerencia"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/reports/daily-cutoff": {
+      "get": {
+        "tags": [
+          "Reportes"
+        ],
+        "summary": "Obtener corte operativo diario",
+        "description": "Obtiene la cantidad de citas completadas y canceladas en una fecha específica.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "description": "Fecha del corte en formato YYYY-MM-DD",
+            "example": "2026-09-07"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Corte operativo obtenido correctamente"
+          },
+          "400": {
+            "description": "Fecha inválida o no proporcionada"
+          },
+          "401": {
+            "description": "Token no proporcionado o inválido"
+          },
+          "403": {
+            "description": "El usuario no tiene permisos de gerencia"
           },
           "500": {
             "description": "Error interno del servidor"

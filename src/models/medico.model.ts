@@ -77,6 +77,60 @@ id_medico,
 
 },
 
+//agenda del médico
+
+getAgenda: async (
+  id_usuario: number,
+  desde?: Date,
+  hasta?: Date,
+) => {
+  const medico = await prisma.medico.findUnique({
+    where: {
+      id_usuario,
+    },
+    select: {
+      id_medico: true,
+    },
+  });
+
+  if (!medico) {
+    return null;
+  }
+
+  return await prisma.cita.findMany({
+    where: {
+      id_medico: medico.id_medico,
+
+      ...(desde || hasta
+        ? {
+            fecha_hora: {
+              ...(desde && { gte: desde }),
+              ...(hasta && { lte: hasta }),
+            },
+          }
+        : {}),
+    },
+
+    orderBy: {
+      fecha_hora: "asc",
+    },
+
+    select: {
+      id_cita: true,
+      fecha_hora: true,
+      estado: true,
+
+      paciente: {
+        select: {
+          CI: true,
+          nombre: true,
+          apellido: true,
+        },
+      },
+    },
+  });
+},
+
 // Crear médico
 
 create: async (

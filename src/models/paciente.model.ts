@@ -60,6 +60,30 @@ export const updatePaciente = async (
     });
 };
 
+// Obtener expediente completo del paciente
+
+export const getExpedientePaciente = async (CI: number) => {
+    return await prisma.paciente.findUnique({
+        where: {
+            CI,
+        },
+        include: {
+            citas: {
+                orderBy: {
+                    fecha_hora: "desc",
+                },
+                include: {
+                    medico: {
+                        include: {
+                            especialidad: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+};
+
 // Eliminación de un paciente existente
 export const deletePaciente = async (CI: number) => {
     return await prisma.paciente.delete({

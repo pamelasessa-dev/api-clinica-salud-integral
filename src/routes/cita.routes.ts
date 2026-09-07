@@ -1,17 +1,24 @@
 import { Router } from "express";
-
+import { verifyToken } from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/authorize.middleware";
 import {
   getCitas,
   getCitaByIdController,
   createCitaController,
   updateCitaController,
+  updateCitaEstadoController,
   deleteCitaController,
 } from "../controllers/cita.controller";
+import { validateSchema } from "../middlewares/validateSchema";
+import { updateEstadoCitaSchema } from "../schemas/cita.schema";
 
 const router: Router = Router();
 
 
-router.get("/", getCitas.getAll, (req, res) => {
+router.get("/", 
+  verifyToken,
+  authorize("RECEPCIONISTA", "MEDICO"),
+  getCitas.getAll, (req, res) => {
   /*
   #swagger.tags = ['Citas']
   #swagger.summary = 'Obtener citas'
@@ -40,7 +47,25 @@ router.get("/", getCitas.getAll, (req, res) => {
   */
 });
 
-router.get("/:id", getCitaByIdController, (req, res) => {
+router.patch(
+  "/:id/status",
+  verifyToken,
+  authorize("MEDICO"),
+  validateSchema(updateEstadoCitaSchema),
+  updateCitaEstadoController,
+  (req, res) => {
+    /*
+      #swagger.tags = ['Citas']
+      #swagger.summary = 'Actualizar estado de una cita'
+    */
+  }
+);
+
+router.get(
+  "/:id", 
+  verifyToken,
+  authorize("RECEPCIONISTA", "MEDICO"),
+  getCitaByIdController, (req, res) => {
   /*
   #swagger.tags = ['Citas']
   #swagger.summary = 'Obtener una cita por ID'
@@ -68,7 +93,11 @@ router.get("/:id", getCitaByIdController, (req, res) => {
   */
 });
 
-router.post("/", createCitaController, (req, res) => {
+router.post(
+  "/",
+  verifyToken,
+  authorize("RECEPCIONISTA"),
+  createCitaController, (req, res) => {
   /*
   #swagger.tags = ['Citas']
   #swagger.summary = 'Crear una cita'
@@ -96,7 +125,11 @@ router.post("/", createCitaController, (req, res) => {
   */
 });
 
-router.put("/:id", updateCitaController, (req, res) => {
+router.put(
+  "/:id",
+  verifyToken,
+  authorize("RECEPCIONISTA"),
+  updateCitaController, (req, res) => {
   /*
   #swagger.tags = ['Citas']
   #swagger.summary = 'Actualizar una cita'
@@ -132,7 +165,12 @@ router.put("/:id", updateCitaController, (req, res) => {
   */
 });
 
-router.delete("/:id", deleteCitaController, (req, res) => {
+
+router.delete(
+  "/:id",
+  verifyToken,
+  authorize("RECEPCIONISTA"),
+  deleteCitaController, (req, res) => {
   /*
   #swagger.tags = ['Citas']
   #swagger.summary = 'Eliminar una cita'

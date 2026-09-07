@@ -56,6 +56,64 @@ res.status(500).json({
 }
 };
 
+// OBTENER AGENDA DEL MÉDICO AUTENTICADO
+
+export const getAgendaMedicoController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        message: "Usuario no autenticado",
+      });
+    }
+
+    const { from, to } = req.query;
+
+    const desde = from ? new Date(from as string) : undefined;
+    const hasta = to ? new Date(to as string) : undefined;
+
+    if (desde && isNaN(desde.getTime())) {
+      return res.status(400).json({
+        message: "El parámetro from debe ser una fecha válida",
+      });
+    }
+
+    if (hasta && isNaN(hasta.getTime())) {
+      return res.status(400).json({
+        message: "El parámetro to debe ser una fecha válida",
+      });
+    }
+
+    if (desde && hasta && desde > hasta) {
+      return res.status(400).json({
+        message: "La fecha from no puede ser posterior a la fecha to",
+      });
+    }
+
+    const agenda = await medicoModel.getAgenda(
+      req.user.id,
+      desde,
+      hasta,
+    );
+
+    if (!agenda) {
+      return res.status(404).json({
+        message: "No se encontró un médico asociado al usuario",
+      });
+    }
+
+    res.status(200).json(agenda);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Error al obtener la agenda del médico",
+    });
+  }
+};
+
 // CREAR MÉDICO
 
 export const createMedicoController = async (

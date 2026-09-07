@@ -9,7 +9,7 @@ import especialidadRoutes from "./routes/especialidad.routes";
 import medicoRoutes from "./routes/medico.routes";
 import citaRoutes from "./routes/cita.routes";
 import authRoutes from "./routes/auth.routes";
-
+import reportesRoutes from "./routes/reportes.routes";
 dotenv.config();
 
 const app = express();
@@ -55,6 +55,7 @@ app.use("/api/pacientes", pacienteRoutes);
 app.use("/api/especialidades", especialidadRoutes);
 app.use("/api/medicos", medicoRoutes);
 app.use("/api/citas", citaRoutes);
+app.use("/api/reports", reportesRoutes);
 
 const PORT = process.env.PORT || 3000;
 

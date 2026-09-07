@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {getPacientes, getPacienteByCI, createPaciente, updatePaciente, deletePaciente} from "../models/paciente.model";
+import {getPacientes, getPacienteByCI,getExpedientePaciente, createPaciente, updatePaciente, deletePaciente} from "../models/paciente.model";
 
 export const getPacientesController = async (req: Request, res: Response) => {
     try {
@@ -21,6 +21,38 @@ export const getPacienteByCIController = async (req: Request, res: Response) => 
         }
     } catch (error) {
         res.status(500).json({ message: "Error al obtener paciente" });
+    }
+};
+// OBTENER EXPEDIENTE COMPLETO DEL PACIENTE
+
+export const getExpedientePacienteController = async (
+    req: Request,
+    res: Response,
+) => {
+    try {
+        const CI = Number(req.params.CI);
+
+        if (isNaN(CI)) {
+            return res.status(400).json({
+                message: "El CI debe ser un número válido",
+            });
+        }
+
+        const expediente = await getExpedientePaciente(CI);
+
+        if (!expediente) {
+            return res.status(404).json({
+                message: "Paciente no encontrado",
+            });
+        }
+
+        res.status(200).json(expediente);
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Error al obtener el expediente del paciente",
+        });
     }
 };
 
