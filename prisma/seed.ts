@@ -546,9 +546,7 @@ async function main() {
       },
     });
   }
-  );
 
-  
 
   const cantidadEspecialidades = await prisma.especialidad.count();
   const cantidadUsuarios = await prisma.usuario.count();
