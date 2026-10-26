@@ -50,7 +50,16 @@ router.post("/login", login, (req, res) => {
   }
 
   #swagger.responses[200] = {
-    description: 'Inicio de sesión exitoso. Devuelve un token JWT.'
+    description: 'Inicio de sesión exitoso. Devuelve el token JWT y el usuario autenticado.',
+    schema: {
+      token: ' ',
+      usuario: {
+        id: 1,
+        nombre: 'Juan',
+        email: 'juan.perez@email.com',
+        rol: 'RECEPCIONISTA'
+      }
+    }
   }
 
   #swagger.responses[401] = {

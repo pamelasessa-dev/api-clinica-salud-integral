@@ -15,6 +15,7 @@ model Paciente {
   direccion        String
   telefono         String
   email            String   @unique
+  estado          EstadoPaciente @default(activo)
   citas            Cita[]
 
   @@map("pacientes")
@@ -67,6 +68,12 @@ model Usuario {
   medico Medico?
 
   @@map("usuarios")
+}
+
+enum EstadoPaciente {
+  activo
+  inactivo
+  en_espera
 }
 
 enum EstadoCita {
