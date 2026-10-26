@@ -5,6 +5,7 @@ export const pacienteSchema = z.object({
   nombre: z.string().min(2).max(100),
   apellido: z.string().min(2).max(100),
   email: z.string().email(),
+  estado: z.enum(["activo", "inactivo", "en_espera"]).default("activo"),
   fecha_nacimiento: z.coerce
   .date()
   .max(new Date(), "La fecha de nacimiento no puede ser futura"),

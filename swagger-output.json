@@ -156,7 +156,40 @@
         ],
         "responses": {
           "200": {
-            "description": "Inicio de sesión exitoso. Devuelve un token JWT."
+            "description": "Inicio de sesión exitoso. Devuelve el token JWT y el usuario autenticado.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": " "
+                },
+                "usuario": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "nombre": {
+                      "type": "string",
+                      "example": "Juan"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "juan.perez@email.com"
+                    },
+                    "rol": {
+                      "type": "string",
+                      "example": "RECEPCIONISTA"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Credenciales inválidas"
@@ -173,10 +206,29 @@
           "Pacientes"
         ],
         "summary": "Obtener todos los pacientes",
-        "description": "Obtiene la lista completa de pacientes registrados en la clínica.",
+        "description": "Obtiene pacientes registrados. Permite filtrar por nombre, apellido o email mediante query.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Filtra pacientes por nombre, apellido o email",
+            "example": "Carlos"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Lista de pacientes obtenida correctamente"
+            "description": "Lista de pacientes obtenida correctamente",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Paciente"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -185,7 +237,19 @@
             "description": "Forbidden"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Error interno del servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
@@ -194,7 +258,7 @@
           "Pacientes"
         ],
         "summary": "Registrar un paciente",
-        "description": "Registra un nuevo paciente en el sistema.",
+        "description": "Registra un nuevo paciente. estado admite: activo, inactivo o en_espera; si se omite, se asigna activo.",
         "parameters": [
           {
             "name": "body",
@@ -231,6 +295,10 @@
                 "telefono": {
                   "type": "string",
                   "example": "099123456"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "activo"
                 }
               }
             }
@@ -238,10 +306,67 @@
         ],
         "responses": {
           "201": {
-            "description": "Paciente creado correctamente"
+            "description": "Paciente creado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CI": {
+                  "type": "number",
+                  "example": 45678901
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Carlos"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Duarte"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "carlos.duarte@gmail.com"
+                },
+                "fecha_nacimiento": {
+                  "type": "string",
+                  "example": "1990-05-15T00:00:00.000Z"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Av. Italia 1234"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "activo"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Datos del paciente inválidos"
+            "description": "Datos inválidos; estado debe ser activo, inactivo o en_espera",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Datos inválidos"
+                },
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -250,7 +375,19 @@
             "description": "Forbidden"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Error interno del servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
@@ -274,7 +411,84 @@
         ],
         "responses": {
           "200": {
-            "description": "Expediente obtenido correctamente"
+            "description": "Expediente obtenido correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CI": {
+                  "type": "number",
+                  "example": 45678901
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Carlos"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Duarte"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "carlos.duarte@gmail.com"
+                },
+                "fecha_nacimiento": {
+                  "type": "string",
+                  "example": "1990-05-15T00:00:00.000Z"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Av. Italia 1234"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "activo"
+                },
+                "citas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "fecha": {
+                        "type": "string",
+                        "example": "2026-10-26T10:00:00.000Z"
+                      },
+                      "estado": {
+                        "type": "string",
+                        "example": "programada"
+                      },
+                      "medico": {
+                        "type": "object",
+                        "properties": {
+                          "nombre": {
+                            "type": "string",
+                            "example": "Ana"
+                          },
+                          "apellido": {
+                            "type": "string",
+                            "example": "Pérez"
+                          },
+                          "especialidad": {
+                            "type": "string",
+                            "example": "Cardiología"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
             "description": "CI inválido"
@@ -289,7 +503,19 @@
             "description": "Paciente no encontrado"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Error interno del servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
@@ -313,7 +539,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Paciente encontrado correctamente"
+            "description": "Paciente encontrado correctamente",
+            "schema": {
+              "$ref": "#/definitions/Paciente"
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -325,7 +554,19 @@
             "description": "Paciente no encontrado"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Error interno del servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
@@ -334,7 +575,7 @@
           "Pacientes"
         ],
         "summary": "Actualizar un paciente",
-        "description": "Actualiza la información de un paciente existente mediante su cédula de identidad.",
+        "description": "Actualiza la información de un paciente existente mediante CI. estado admite: activo, inactivo o en_espera.",
         "parameters": [
           {
             "name": "CI",
@@ -375,6 +616,10 @@
                 "telefono": {
                   "type": "string",
                   "example": "099123456"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "activo"
                 }
               }
             }
@@ -382,10 +627,67 @@
         ],
         "responses": {
           "200": {
-            "description": "Paciente actualizado correctamente"
+            "description": "Paciente actualizado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "CI": {
+                  "type": "number",
+                  "example": 45678901
+                },
+                "nombre": {
+                  "type": "string",
+                  "example": "Carlos"
+                },
+                "apellido": {
+                  "type": "string",
+                  "example": "Duarte"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "carlos.duarte@gmail.com"
+                },
+                "fecha_nacimiento": {
+                  "type": "string",
+                  "example": "1990-05-15T00:00:00.000Z"
+                },
+                "direccion": {
+                  "type": "string",
+                  "example": "Av. Italia 1234"
+                },
+                "telefono": {
+                  "type": "string",
+                  "example": "099123456"
+                },
+                "estado": {
+                  "type": "string",
+                  "example": "activo"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Datos del paciente inválidos"
+            "description": "Datos inválidos; estado debe ser activo, inactivo o en_espera",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Datos inválidos"
+                },
+                "errors": {
+                  "type": "array",
+                  "example": [],
+                  "items": {}
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -397,7 +699,19 @@
             "description": "Paciente no encontrado"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Error interno del servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       },
@@ -419,7 +733,19 @@
         ],
         "responses": {
           "200": {
-            "description": "Paciente eliminado correctamente"
+            "description": "Paciente eliminado correctamente",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Paciente eliminado"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -431,7 +757,19 @@
             "description": "Paciente no encontrado"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Error interno del servidor",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Error interno del servidor"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }
@@ -1234,6 +1572,45 @@
           "500": {
             "description": "Error interno del servidor"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Paciente": {
+      "type": "object",
+      "properties": {
+        "CI": {
+          "type": "number",
+          "example": 45678901
+        },
+        "nombre": {
+          "type": "string",
+          "example": "Carlos"
+        },
+        "apellido": {
+          "type": "string",
+          "example": "Duarte"
+        },
+        "email": {
+          "type": "string",
+          "example": "carlos.duarte@gmail.com"
+        },
+        "fecha_nacimiento": {
+          "type": "string",
+          "example": "1990-05-15T00:00:00.000Z"
+        },
+        "direccion": {
+          "type": "string",
+          "example": "Av. Italia 1234"
+        },
+        "telefono": {
+          "type": "string",
+          "example": "099123456"
+        },
+        "estado": {
+          "type": "string",
+          "example": "activo"
         }
       }
     }

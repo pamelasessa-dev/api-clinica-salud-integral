@@ -30,14 +30,24 @@ router.get(
     /*
     #swagger.tags = ['Pacientes']
     #swagger.summary = 'Obtener todos los pacientes'
-    #swagger.description = 'Obtiene la lista completa de pacientes registrados en la clínica.'
+    #swagger.description = 'Obtiene pacientes registrados. Permite filtrar por nombre, apellido o email mediante query.'
+
+    #swagger.parameters['query'] = {
+      in: 'query',
+      required: false,
+      type: 'string',
+      description: 'Filtra pacientes por nombre, apellido o email',
+      example: 'Carlos'
+    }
 
     #swagger.responses[200] = {
-      description: 'Lista de pacientes obtenida correctamente'
+      description: 'Lista de pacientes obtenida correctamente',
+      schema: [{ $ref: '#/definitions/Paciente' }]
     }
 
     #swagger.responses[500] = {
-      description: 'Error interno del servidor'
+      description: 'Error interno del servidor',
+      schema: { message: 'Error interno del servidor' }
     }
     */
   }
@@ -64,7 +74,11 @@ router.get(
     }
 
     #swagger.responses[200] = {
-      description: 'Expediente obtenido correctamente'
+      description: 'Expediente obtenido correctamente',
+      schema: {
+        ...({ CI: 45678901, nombre: 'Carlos', apellido: 'Duarte', email: 'carlos.duarte@gmail.com', fecha_nacimiento: '1990-05-15T00:00:00.000Z', direccion: 'Av. Italia 1234', telefono: '099123456', estado: 'activo' }),
+        citas: [{ id: 1, fecha: '2026-10-26T10:00:00.000Z', estado: 'programada', medico: { nombre: 'Ana', apellido: 'Pérez', especialidad: 'Cardiología' } }]
+      }
     }
 
     #swagger.responses[400] = {
@@ -84,7 +98,8 @@ router.get(
     }
 
     #swagger.responses[500] = {
-      description: 'Error interno del servidor'
+      description: 'Error interno del servidor',
+      schema: { message: 'Error interno del servidor' }
     }
     */
   }
@@ -111,7 +126,8 @@ router.get(
     }
 
     #swagger.responses[200] = {
-      description: 'Paciente encontrado correctamente'
+      description: 'Paciente encontrado correctamente',
+      schema: { $ref: '#/definitions/Paciente' }
     }
 
     #swagger.responses[404] = {
@@ -119,7 +135,8 @@ router.get(
     }
 
     #swagger.responses[500] = {
-      description: 'Error interno del servidor'
+      description: 'Error interno del servidor',
+      schema: { message: 'Error interno del servidor' }
     }
     */
   }
@@ -136,7 +153,7 @@ router.post(
     /*
     #swagger.tags = ['Pacientes']
     #swagger.summary = 'Registrar un paciente'
-    #swagger.description = 'Registra un nuevo paciente en el sistema.'
+    #swagger.description = 'Registra un nuevo paciente. estado admite: activo, inactivo o en_espera; si se omite, se asigna activo.'
 
     #swagger.parameters['body'] = {
       in: 'body',
@@ -149,20 +166,24 @@ router.post(
         email: 'carlos.duarte@gmail.com',
         fecha_nacimiento: '1990-05-15',
         direccion: 'Av. Italia 1234',
-        telefono: '099123456'
+        telefono: '099123456',
+        estado: 'activo'
       }
     }
 
     #swagger.responses[201] = {
-      description: 'Paciente creado correctamente'
+      description: 'Paciente creado correctamente',
+      schema: { CI: 45678901, nombre: 'Carlos', apellido: 'Duarte', email: 'carlos.duarte@gmail.com', fecha_nacimiento: '1990-05-15T00:00:00.000Z', direccion: 'Av. Italia 1234', telefono: '099123456', estado: 'activo' }
     }
 
     #swagger.responses[400] = {
-      description: 'Datos del paciente inválidos'
+      description: 'Datos inválidos; estado debe ser activo, inactivo o en_espera',
+      schema: { message: 'Datos inválidos', errors: [] }
     }
 
     #swagger.responses[500] = {
-      description: 'Error interno del servidor'
+      description: 'Error interno del servidor',
+      schema: { message: 'Error interno del servidor' }
     }
     */
   }
@@ -179,7 +200,7 @@ router.put(
     /*
     #swagger.tags = ['Pacientes']
     #swagger.summary = 'Actualizar un paciente'
-    #swagger.description = 'Actualiza la información de un paciente existente mediante su cédula de identidad.'
+    #swagger.description = 'Actualiza la información de un paciente existente mediante CI. estado admite: activo, inactivo o en_espera.'
 
     #swagger.parameters['CI'] = {
       in: 'path',
@@ -199,16 +220,19 @@ router.put(
         email: 'javi@gmail.com',
         fecha_nacimiento: '1990-05-15',
         direccion: 'Av. Italia 1234',
-        telefono: '099123456'
+        telefono: '099123456',
+        estado: 'activo'
       }
     }
 
     #swagger.responses[200] = {
-      description: 'Paciente actualizado correctamente'
+      description: 'Paciente actualizado correctamente',
+      schema: { CI: 45678901, nombre: 'Carlos', apellido: 'Duarte', email: 'carlos.duarte@gmail.com', fecha_nacimiento: '1990-05-15T00:00:00.000Z', direccion: 'Av. Italia 1234', telefono: '099123456', estado: 'activo' }
     }
 
     #swagger.responses[400] = {
-      description: 'Datos del paciente inválidos'
+      description: 'Datos inválidos; estado debe ser activo, inactivo o en_espera',
+      schema: { message: 'Datos inválidos', errors: [] }
     }
 
     #swagger.responses[404] = {
@@ -216,7 +240,8 @@ router.put(
     }
 
     #swagger.responses[500] = {
-      description: 'Error interno del servidor'
+      description: 'Error interno del servidor',
+      schema: { message: 'Error interno del servidor' }
     }
     */
   }
@@ -243,7 +268,8 @@ router.delete(
     }
 
     #swagger.responses[200] = {
-      description: 'Paciente eliminado correctamente'
+      description: 'Paciente eliminado correctamente',
+      schema: { message: 'Paciente eliminado' }
     }
 
     #swagger.responses[404] = {
@@ -251,7 +277,8 @@ router.delete(
     }
 
     #swagger.responses[500] = {
-      description: 'Error interno del servidor'
+      description: 'Error interno del servidor',
+      schema: { message: 'Error interno del servidor' }
     }
     */
   }

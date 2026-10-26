@@ -102,6 +102,7 @@ async function main() {
         direccion: "Av. Italia 1234",
         telefono: "099123456",
         email: "carlos@test.com",
+        estado: "activo",
       },
       {
         CI: 48765432,
@@ -111,6 +112,7 @@ async function main() {
         direccion: "Sarandí 456",
         telefono: "098765432",
         email: "maria@test.com",
+        estado: "en_espera",
       },
       {
         CI: 51234567,
@@ -120,6 +122,7 @@ async function main() {
         direccion: "Zorrilla 789",
         telefono: "097111222",
         email: "lucia@test.com",
+        estado: "inactivo",
       },
     ],
   });

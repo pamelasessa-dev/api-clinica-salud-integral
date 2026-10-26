@@ -37,6 +37,19 @@ const doc = {
     },
   ],
 
+  definitions: {
+    Paciente: {
+      CI: 45678901,
+      nombre: 'Carlos',
+      apellido: 'Duarte',
+      email: 'carlos.duarte@gmail.com',
+      fecha_nacimiento: '1990-05-15T00:00:00.000Z',
+      direccion: 'Av. Italia 1234',
+      telefono: '099123456',
+      estado: 'activo',
+    },
+  },
+
   securityDefinitions: {
     bearerAuth: {
       type: "apiKey",
