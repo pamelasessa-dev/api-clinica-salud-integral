@@ -3,6 +3,7 @@ import { verifyToken } from "../middlewares/auth.middleware";
 import { authorize } from "../middlewares/authorize.middleware";
 import {
   getCitas,
+  getCitasPorPacienteController,
   getCitaByIdController,
   createCitaController,
   updateCitaController,
@@ -17,7 +18,7 @@ const router: Router = Router();
 
 router.get("/", 
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   getCitas.getAll, (req, res) => {
   /*
   #swagger.tags = ['Citas']
@@ -33,6 +34,16 @@ router.get("/",
     example: 'PROGRAMADA'
   }
 
+  #swagger.parameters['pagina'] = {
+    in: 'query', required: false, type: 'integer', minimum: 1, default: 1,
+    description: 'Número de página'
+  }
+
+  #swagger.parameters['limite'] = {
+    in: 'query', required: false, type: 'integer', minimum: 1, maximum: 100, default: 10,
+    description: 'Cantidad de citas por página'
+  }
+
   #swagger.responses[200] = {
     description: 'Lista de citas obtenida correctamente'
   }
@@ -46,6 +57,13 @@ router.get("/",
   }
   */
 });
+
+router.get(
+  "/paciente/:CI",
+  verifyToken,
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
+  getCitasPorPacienteController,
+);
 
 router.patch(
   "/:id/status",
@@ -105,7 +123,7 @@ router.patch(
 router.get(
   "/:id", 
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   getCitaByIdController, (req, res) => {
   /*
   #swagger.tags = ['Citas']

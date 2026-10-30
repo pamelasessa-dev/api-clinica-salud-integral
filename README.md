@@ -226,7 +226,11 @@ Prisma Studio permitirá consultar las entidades y los datos almacenados en la b
 ```text
 POST /api/auth/register
 POST /api/auth/login
+GET  /api/auth/me
+PUT  /api/auth/perfil
 ```
+
+`PUT /api/auth/perfil` requiere un token Bearer y recibe `multipart/form-data` con `nombre`, `email`, `telefono` y una foto opcional en el campo `foto` (JPG, PNG o WEBP, hasta 5 MB). Las fotos se sirven desde `/uploads/perfiles/`.
 
 ### Pacientes
 
@@ -267,12 +271,17 @@ DELETE /api/medicos/:id
 
 ```text
 GET    /api/citas
+GET    /api/citas/paciente/:CI
 GET    /api/citas/:id
 POST   /api/citas
 PUT    /api/citas/:id
 PATCH  /api/citas/:id/status
 DELETE /api/citas/:id
 ```
+
+`GET /api/citas` acepta `pagina` (predeterminada: 1), `limite` (predeterminado: 10; máximo: 100), `estado`, `desde` y `hasta`. Devuelve `{ data, total, pagina, totalPaginas }`; `total` y `totalPaginas` respetan los filtros aplicados.
+
+Para incorporar los campos `telefono` y `foto` del perfil en una base existente, ejecutar `pnpm exec prisma generate` y `pnpm exec prisma migrate deploy` antes de iniciar la API.
 
 ### Reportes
 

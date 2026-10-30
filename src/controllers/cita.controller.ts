@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 import { EstadoCita } from "../../generated/prisma/client";
 import {
-  getAllCitas,
+  getCitasPaginadas,
+  getCitasPorPaciente,
   getCitaById,
   createCita,
   updateCita,
@@ -18,6 +19,13 @@ export const getCitas = {
   getAll: async (req: Request, res: Response): Promise<void> => {
     try {
       const { estado, desde, hasta } = req.query;
+      const pagina = Number(req.query.pagina ?? 1);
+      const limite = Number(req.query.limite ?? 10);
+
+      if (!Number.isInteger(pagina) || pagina < 1 || !Number.isInteger(limite) || limite < 1 || limite > 100) {
+        res.status(400).json({ message: "pagina debe ser un entero positivo y limite debe estar entre 1 y 100" });
+        return;
+      }
 
       // Validar estado
       if (estado && typeof estado !== "string") {
@@ -57,15 +65,15 @@ export const getCitas = {
       }
 
       // Convertir las fechas de string a Date
-      const citas = await getAllCitas(
+      const respuesta = await getCitasPaginadas(
+        pagina,
+        limite,
         estado as EstadoCita | undefined,
         desde ? new Date(desde) : undefined,
         hasta ? new Date(hasta) : undefined,
       );
 
-      res.status(200).json({
-        data: citas,
-      });
+      res.status(200).json(respuesta);
     } catch (error) {
       console.error(error);
 
@@ -74,6 +82,21 @@ export const getCitas = {
       });
     }
   },
+};
+
+export const getCitasPorPacienteController = async (req: Request, res: Response): Promise<void> => {
+  const CI = Number(req.params.CI);
+  if (!Number.isInteger(CI) || CI <= 0) {
+    res.status(400).json({ message: "CI debe ser un entero positivo" });
+    return;
+  }
+  try {
+    const citas = await getCitasPorPaciente(CI);
+    res.status(200).json(citas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener las citas del paciente" });
+  }
 };
 
 export const getCitaByIdController = async (
