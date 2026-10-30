@@ -1,58 +1,55 @@
 import { EstadoCita } from "../../generated/prisma/client";
 import prisma from "../config/prisma";
 
-//listar todas las citas
-export const getAllCitas = async (
+const citaListaSelect = {
+  id_cita: true,
+  fecha_hora: true,
+  estado: true,
+  paciente: { select: { CI: true, nombre: true, apellido: true } },
+  medico: {
+    select: {
+      nombre: true,
+      apellido: true,
+      especialidad: { select: { nombre: true } },
+    },
+  },
+} as const;
+
+const filtroCitas = (estado?: EstadoCita, desde?: Date, hasta?: Date) => ({
+  ...(estado && { estado }),
+  ...(desde || hasta
+    ? { fecha_hora: { ...(desde && { gte: desde }), ...(hasta && { lte: hasta }) } }
+    : {}),
+});
+
+export const getCitasPaginadas = async (
+  pagina: number,
+  limite: number,
   estado?: EstadoCita,
   desde?: Date,
   hasta?: Date,
 ) => {
-  return await prisma.cita.findMany({
-    where: {
-      ...(estado && { estado }),
+  const where = filtroCitas(estado, desde, hasta);
+  const [data, total] = await Promise.all([
+    prisma.cita.findMany({
+      where,
+      skip: (pagina - 1) * limite,
+      take: limite,
+      orderBy: { fecha_hora: "asc" },
+      select: citaListaSelect,
+    }),
+    prisma.cita.count({ where }),
+  ]);
 
-      ...(desde || hasta
-        ? {
-            fecha_hora: {
-              ...(desde && { gte: desde }),
-              ...(hasta && { lte: hasta }),
-            },
-          }
-        : {}),
-    },
-
-    orderBy: {
-      fecha_hora: "asc",
-    },
-
-    select: {
-      id_cita: true,
-      fecha_hora: true,
-      estado: true,
-
-      paciente: {
-        select: {
-          CI: true,
-          nombre: true,
-          apellido: true,
-        },
-      },
-
-      medico: {
-        select: {
-          nombre: true,
-          apellido: true,
-
-          especialidad: {
-            select: {
-              nombre: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  return { data, total, pagina, totalPaginas: Math.ceil(total / limite) };
 };
+
+export const getCitasPorPaciente = async (CI: number) =>
+  prisma.cita.findMany({
+    where: { CI_paciente: CI },
+    orderBy: { fecha_hora: "desc" },
+    select: citaListaSelect,
+  });
 
 export const getCitaById = async (id: number) => {
   return await prisma.cita.findUnique({

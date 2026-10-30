@@ -1,8 +1,13 @@
 
 import { Router } from "express";
-import { register, login } from "../controllers/auth.controller.js";
+import { register, login, me, updatePerfil } from "../controllers/auth.controller.js";
+import { verifyToken } from "../middlewares/auth.middleware";
+import { receiveProfilePhoto } from "../middlewares/uploadProfile.middleware";
 
 const router: Router = Router();
+
+router.get("/me", verifyToken, me);
+router.put("/perfil", verifyToken, receiveProfilePhoto, updatePerfil);
 
 router.post("/register", register, (req, res) => {
   /*

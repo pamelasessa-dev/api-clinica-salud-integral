@@ -24,7 +24,7 @@ const router: Router = Router();
 router.get(
   "/",
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   getPacientesController,
   (req, res) => {
     /*
@@ -57,7 +57,7 @@ router.get(
 router.get(
   "/:CI/expediente",
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   getExpedientePacienteController,
   (req, res) => {
     /*
@@ -109,7 +109,7 @@ router.get(
 router.get(
   "/:CI",
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   getPacienteByCIController,
   (req, res) => {
     /*

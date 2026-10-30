@@ -64,6 +64,8 @@ model Usuario {
   email    String @unique
   password String
   rol      Rol
+  telefono String?
+  foto     String?
 
   medico Medico?
 

@@ -18,7 +18,7 @@ const router: Router = Router();
 router.get(
   "/",
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   medicoController.getAll,
   (req, res) => {
     /*
@@ -122,7 +122,7 @@ router.get(
 router.get(
   "/:id",
   verifyToken,
-  authorize("RECEPCIONISTA", "MEDICO"),
+  authorize("RECEPCIONISTA", "MEDICO", "GERENCIA"),
   getMedicoByIdController,
   (req, res) => {
     /*
